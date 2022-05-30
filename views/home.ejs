@@ -14,13 +14,13 @@
         <form action="/create-task" method="post">
             <div id="description-container">
                 <label for="description">DESCRIPTION</label>
-                <input type="text" id="description" name="title" placeholder="What do you need to do?">
+                <input type="text" id="description" name="task_name" placeholder="What do you need to do?">
             </div>
             <div id="category-date-container">
                 <div>
                     <label for="category">CATEGORY</label>
                     <select name="category" id="category">
-                        <option selected>Choose a category</option>
+                        <option style="display: none;" selected>Choose a category</option>
                         <option value="Personal">Personal</option>
                         <option value="Work">Work</option>
                         <option value="School">School</option>
@@ -38,29 +38,36 @@
                     <span><i class="fa-solid fa-plus" style="font-size: 1.2rem;"></i></span>&emsp;&ensp;
                     <span>ADD TASK</span>
                 </button>
-                <a href="/delete-task">
-                    <button type="submit" id="delete-task-button">
-                        <span><i class="fa-solid fa-trash-can" style="font-size: 1.2rem;"></i></span>&emsp;
-                        <span>DELETE TASKS</span>
-                    </button>
-                </a>
+                <button type="submit" id="delete-tasks-button" form="delete-tasks">
+                    <span><i class="fa-solid fa-trash-can" style="font-size: 1.2rem;"></i></span>&emsp;
+                    <span>DELETE TASKS</span>
+                </button>
             </div>
         </form>
-        <ul>
-            <% for(let task of tasks){ %>
-                <li class="task-item">
-                    <input type="checkbox" id=<%= task._id %>>
-                    <label for=<%= task._id %>><%= task.title %></label>
-                    <p>
-                        <span><i class="fa-solid fa-calendar-days"></i></span>
-                        <span><%= task.due_date %></span>
-                    </p>
-                    <div>
-                        <%= task.category %>
-                    </div>
-                </li>    
-            <% } %>
-        </ul>
+        <form action="/delete-tasks" method="post" id="delete-tasks">
+            <ul>
+                <% for(let i=0; i<tasks.length; i++){ %>
+                    <li class="task-item">
+                        <div>
+                            <input type="checkbox" name=<%= i.toString() %> value="<%= tasks[i]._id %>">
+                            <label><%= tasks[i].task_name %></label>
+                            <p>
+                                <span><i class="fa-solid fa-calendar-days"></i></span>
+                                <span><%= (tasks[i].due_date).toString().slice(4,10)+', '+(tasks[i].due_date).toString().slice(10,16) %></span>
+                            </p>
+                        </div>
+                        <div class="category" data-category=<%= tasks[i].category %>>
+                            <%= tasks[i].category %>
+                        </div>
+                        <div>
+                            <a href="/delete-single-task/?id=<%= tasks[i]._id %>">
+                                <i class="fa-solid fa-circle-xmark" style="color: red; font-size: 1.2rem;"></i>
+                            </a>
+                        </div>
+                    </li>    
+                <% } %>
+            </ul>
+        </form>
     </main>
 
     <script type="text/javascript" src="/js/home.js"></script>
