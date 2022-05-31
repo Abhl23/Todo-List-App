@@ -2,22 +2,31 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <!------------- Viewport meta tag --------------->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!----------------- Title of the page ----------------->
 	<title>Todo List</title>
+    <!----------------- Linking the css file ----------------->
     <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <!----------------- Linking the fontawesome kit ----------------->
     <script src="https://kit.fontawesome.com/0f031655d5.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    
+    <!----------------- main content of the page ----------------->
     <main>
+        <!----------------- Heading of the page ----------------->
         <h1>TODO App</h1>
+        <!----------------- Form used for collecting todo tasks information -->
         <form action="/create-task" method="post">
+            <!----------------- Description container of the form ----------------->
             <div id="description-container">
                 <label for="description">DESCRIPTION</label>
                 <input type="text" id="description" name="task_name" placeholder="What do you need to do?">
             </div>
+            <!----------------- Category and due-date container of the form ----------------->
             <div id="category-date-container">
-                <div>
+                <!----------------- Category container ----------------->
+                <div id="category-container">
                     <label for="category">CATEGORY</label>
                     <select name="category" id="category">
                         <option style="display: none;" selected>Choose a category</option>
@@ -28,37 +37,52 @@
                         <option value="Other">Other</option>
                     </select>
                 </div>
-                <div>
+                <!----------------- Due-date container ----------------->
+                <div id="due-date-container">
                     <label for="due-date">DUE DATE</label>
                     <input type="date" id="due-date" name="due_date">
                 </div>
             </div>
+            <!----------------- Add task and Delete tasks button container ----------------->
             <div id="button-container">
+                <!----------------- Add task button ----------------->
                 <button type="submit" id="add-task-button">
                     <span><i class="fa-solid fa-plus" style="font-size: 1.2rem;"></i></span>&emsp;&ensp;
                     <span>ADD TASK</span>
                 </button>
+                <!----------------- Delete tasks button ----------------->
+                <!----------------- This button belongs to the delete tasks form ----------------->
                 <button type="submit" id="delete-tasks-button" form="delete-tasks">
                     <span><i class="fa-solid fa-trash-can" style="font-size: 1.2rem;"></i></span>&emsp;
                     <span>DELETE TASKS</span>
                 </button>
             </div>
         </form>
+        <!----------------- Form used for collecting the tasks to be deleted from the database ----------------->
         <form action="/delete-tasks" method="post" id="delete-tasks">
+            <!----------------- Unordered list displaying all the tasks currently present in the database ----------------->
             <ul>
                 <% for(let i=0; i<tasks.length; i++){ %>
+                    <!----------------- for loop used to display individual tasks from the database ----------------->
                     <li class="task-item">
                         <div>
+                            <!----------------- Setting name attribute to 'indices ranging from 0 to tasks.length-1' and value attribute to id of the corresponding task -->
+                            <!----------------- Task checkbox ----------------->
                             <input type="checkbox" name=<%= i.toString() %> value="<%= tasks[i]._id %>">
+                            <!----------------- Task name ----------------->
                             <label><%= tasks[i].task_name %></label>
+                            <!----------------- Task due-date ----------------->
                             <p>
                                 <span><i class="fa-solid fa-calendar-days"></i></span>
+                                <!-- Since the type of due_date field in the schema is set to 'Date', its necessary to slice its value to just get the date and year part -->
                                 <span><%= (tasks[i].due_date).toString().slice(4,10)+', '+(tasks[i].due_date).toString().slice(10,16) %></span>
                             </p>
                         </div>
+                        <!----------------- Color-coded div to display the category of the task ----------------->
                         <div class="category" data-category=<%= tasks[i].category %>>
                             <%= tasks[i].category %>
                         </div>
+                        <!----------------- Div containing cross icon to delete individual task from the database ----------------->
                         <div>
                             <a href="/delete-single-task/?id=<%= tasks[i]._id %>">
                                 <i class="fa-solid fa-circle-xmark" style="color: red; font-size: 1.2rem;"></i>
@@ -69,7 +93,7 @@
             </ul>
         </form>
     </main>
-
+    <!----------------- Linking JavaScript file ----------------->
     <script type="text/javascript" src="/js/home.js"></script>
 </body>
 </html>>
