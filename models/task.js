@@ -20,5 +20,5 @@ const taskSchema=new mongoose.Schema({
 // Setting up a collection called 'Task' and the schema it'll be following
 const Task=mongoose.model('Task', taskSchema);
 
-// exporting the model 'Task' so it can be used in the index.js file
+// exporting the model 'Task' so it can be used in other files
 module.exports=Task;
